@@ -1,6 +1,14 @@
 #!/bin/bash
 # Create model folders and download dependencies
 
+# Download VACE source code if not exists
+if [ ! -d "vace" ]; then
+  echo "Cloning VACE source code..."
+  git clone https://github.com/ali-vilab/VACE.git vace
+else
+  echo "VACE source code already exists."
+fi
+
 mkdir -p models
 
 # Clone VACE-Annotators
