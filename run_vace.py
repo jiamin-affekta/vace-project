@@ -3,35 +3,35 @@ import subprocess
 import os
 
 def generate_video(text, voice_type):
-    # 将输入保存为 config 文件（也可以动态构建 yaml）
+    # Save the input as a config file (can also dynamically construct a YAML)
     config_path = "configs/tmp.yaml"
     with open(config_path, "w") as f:
         f.write(f"prompt: \"{text}\"\n")
         f.write(f"voice: \"{voice_type}\"\n")
 
-    # 调用 VACE 脚本（假设已经安装依赖并在当前目录）
+    # Run the VACE script (assuming dependencies are installed and script is in the current directory)
     try:
         subprocess.run(["python", "run_vace.py", "--config", config_path], check=True)
     except subprocess.CalledProcessError:
-        return "生成失败，请检查日志", None
+        return "Generation failed. Please check the logs.", None
 
-    # 输出路径假设为 output/result.mp4
+    # Assume the output video path is output/result.mp4
     video_path = "output/result.mp4"
     if os.path.exists(video_path):
-        return "生成成功！", video_path
+        return "Generation successful!", video_path
     else:
-        return "视频生成失败", None
+        return "Video generation failed.", None
 
-# GUI 界面布局
+# GUI layout
 with gr.Blocks() as demo:
-    gr.Markdown("## 🎬 VACE 视频生成器")
-    text_input = gr.Textbox(lines=4, label="请输入视频脚本或提示词")
-    voice_dropdown = gr.Dropdown(choices=["girl", "boy", "woman", "man"], value="girl", label="声音类型")
-    generate_btn = gr.Button("生成视频")
-    status_output = gr.Textbox(label="状态")
-    video_output = gr.Video(label="预览生成视频")
+    gr.Markdown("## 🎬 VACE Video Generator")
+    text_input = gr.Textbox(lines=4, label="Enter video script or prompt")
+    voice_dropdown = gr.Dropdown(choices=["girl", "boy", "woman", "man"], value="girl", label="Voice type")
+    generate_btn = gr.Button("Generate Video")
+    status_output = gr.Textbox(label="Status")
+    video_output = gr.Video(label="Preview Generated Video")
 
     generate_btn.click(fn=generate_video, inputs=[text_input, voice_dropdown], outputs=[status_output, video_output])
 
-# 启动 GUI
+# Launch the GUI
 demo.launch()

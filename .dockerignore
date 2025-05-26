@@ -1,0 +1,10 @@
+output/
+models/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+.env
+*.env 
+*.log
